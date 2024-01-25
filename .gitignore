@@ -23,6 +23,8 @@ lerna-debug.log*
 /coverage
 /.nyc_output
 
+package-lock.json
+
 # IDEs and editors
 /.idea
 .project

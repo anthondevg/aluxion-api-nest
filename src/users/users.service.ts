@@ -15,6 +15,7 @@ export class UsersService {
         email: data.email,
         password: hashedPassword,
         name: data.name,
+        provider: data.provider,
       },
     });
   }

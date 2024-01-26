@@ -76,4 +76,14 @@ export class S3Service {
     const url = await this.s3.getSignedUrlPromise('getObject', params);
     return { url };
   }
+
+  async uploadImageFromBuffer(buffer: Buffer, key: string): Promise<any> {
+    const params: AWS.S3.PutObjectRequest = {
+      Bucket: bucketName,
+      Key: key,
+      Body: buffer,
+    };
+
+    return await this.s3.putObject(params).promise();
+  }
 }

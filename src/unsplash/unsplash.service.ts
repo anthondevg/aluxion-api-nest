@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
+import axios from 'axios';
 
 @Injectable()
 export class UnsplashService {
@@ -20,5 +21,10 @@ export class UnsplashService {
     );
 
     return data;
+  }
+
+  async downloadImage(url: string): Promise<Buffer> {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    return Buffer.from(response.data, 'binary');
   }
 }

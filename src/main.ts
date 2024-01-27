@@ -16,7 +16,7 @@ async function bootstrap() {
       'Aluxion Docs. Please, Feel free to provide JWT Token in the Authorize button to test some of the protected Endpoints',
     )
     .setVersion('1.0')
-    .addTag('Aluxion API', 'desarrrollador por Anthony Gonzalez')
+    .addTag('Aluxion API', 'desarrrollado por Anthony Gonzalez')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

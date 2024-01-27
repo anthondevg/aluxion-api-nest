@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 const roundsOfHashing = 10;

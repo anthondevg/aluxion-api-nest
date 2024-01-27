@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-
+import * as crypto from 'crypto';
 @Injectable()
 export class PasswordResetService {
   constructor(private readonly prisma: PrismaService) {}
@@ -15,7 +15,7 @@ export class PasswordResetService {
       throw new HttpException('No user found', HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    const token = require('crypto').randomBytes(64).toString('hex');
+    const token = crypto.randomBytes(64).toString('hex');
     const currentDate = new Date();
     const expiryDate = new Date(currentDate.getTime() + 30 * 60000);
 

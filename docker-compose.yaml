@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   nestjs-app:
     build:
@@ -10,8 +10,10 @@ services:
       - postgres-db
     links:
       - postgres-db
-    environment:
-      - DATABASE_URL=postgresql://postgres:pass123@postgresdatabase:5432/mydb
+    env_file:
+      - .env.docker
+    networks:
+      - nestjs-network
     
   postgres-db:
     image: postgres:latest
@@ -21,7 +23,18 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass123
       POSTGRES_DB: mydb
+    networks:
+      - nestjs-network
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    env_file:
+      - .env.docker  
     ports:
       - "5432:5432"
 
-    
+networks:
+  nestjs-network:
+    driver: bridge
+
+volumes:
+  postgres:

@@ -14,17 +14,18 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new user' })
   async create(@Body() createUserDto: CreateUserDto) {
     if (await this.findOne(createUserDto.email))
       throw new HttpException('User already exists', HttpStatus.CONFLICT);
-
     return this.usersService.create(createUserDto);
   }
 
@@ -41,13 +42,6 @@ export class UsersController {
   async findOne(@Param('email') email: string) {
     const user = await this.usersService.findUserByEmail(email);
     if (user) return { id: user.id, email: user.email, name: user.name };
-  }
-
-  @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')

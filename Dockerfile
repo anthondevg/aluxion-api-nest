@@ -1,29 +1,20 @@
-# Use an official Node runtime as a parent image
-FROM node:21-alpine
+FROM node:21
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+# Create app directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
+COPY prisma ./prisma/
 
-# Install NestJS dependencies
+# Install app dependencies
 RUN npm install
 
-
-# Copy the rest of the application code
 COPY . .
 
-RUN npx prisma generate
-# Expose the port that the NestJS app will run on
+RUN npm run build
+
 EXPOSE 3000
+CMD [  "npm", "run", "start:migrate:prod" ]
 
-# Define environment variables
-ENV NODE_ENV=production
-ENV DATABASE_PORT=5432
-ENV DATABASE_USERNAME=postgres
-ENV DATABASE_PASSWORD=pass123
-ENV DATABASE_NAME=mydb
 
-# Start the NestJS application
-CMD [ "npm", "run", "start:prod" ]

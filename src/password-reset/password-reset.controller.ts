@@ -1,16 +1,27 @@
 import { Controller, Post, Body, Param } from '@nestjs/common';
 import { PasswordResetService } from './password-reset.service';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 // import { Resend } from 'resend';
 
 @Controller('password-reset')
+@ApiTags('password reset')
 export class PasswordResetController {
   constructor(private readonly passwordResetService: PasswordResetService) {}
 
   @Post()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', example: 'ielorduy@aluxion.com' },
+      },
+      required: ['email'],
+    },
+  })
   async requestReset(@Body('email') email: string): Promise<any> {
     const token = await this.passwordResetService.generateResetToken(email);
 
-    // Send email using SMTP service like resend, for testing porpuses we are going to use just the token in our api.
+    // Send email using SMTP service like resend, for testing purposes we are going to use just the token in our api.
     // const resend = new Resend('key');
 
     // resend.emails.send({

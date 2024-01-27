@@ -1,18 +1,40 @@
-# docker-compose.yml
-# this is a provisional postgre docker yaml
 version: '3.8'
 services:
-
-  postgres:
-    image: postgres:13.5
+  nestjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres-db
+    links:
+      - postgres-db
+    env_file:
+      - .env.docker
+    networks:
+      - nestjs-network
+    
+  postgres-db:
+    image: postgres:latest
+    container_name: postgresdatabase
     restart: always
     environment:
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: mydb
+    networks:
+      - nestjs-network
     volumes:
       - postgres:/var/lib/postgresql/data
+    env_file:
+      - .env.docker  
     ports:
-      - '5432:5432'
+      - "5432:5432"
+
+networks:
+  nestjs-network:
+    driver: bridge
 
 volumes:
   postgres:

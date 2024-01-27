@@ -19,10 +19,3 @@ model User {
   resetToken String?
   expiryDate DateTime?
 }
-
-model Image {
-  id          Int     @id @default(autoincrement())
-  url         String  @unique
-  title       String
-  description String?
-}

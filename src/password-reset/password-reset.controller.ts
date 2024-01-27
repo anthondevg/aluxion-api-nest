@@ -10,7 +10,7 @@ export class PasswordResetController {
   async requestReset(@Body('email') email: string): Promise<any> {
     const token = await this.passwordResetService.generateResetToken(email);
 
-    // Send email using SMTP service like resend, for testing porpuses we are going to use just the token in our api.
+    // Send email using SMTP service like resend, for testing purposes we are going to use just the token in our api.
     // const resend = new Resend('key');
 
     // resend.emails.send({

@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Body,
+  Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from './s3.service';
@@ -13,7 +14,11 @@ import { S3Service } from './s3.service';
 @Controller('file')
 export class S3Controller {
   constructor(private readonly s3Service: S3Service) {}
-
+  // list files
+  @Get('')
+  async list(): Promise<AWS.S3.ObjectList> {
+    return this.s3Service.listObjects();
+  }
   // rename file
   @Post('rename')
   async renameObject(@Body() body: { oldKey: string; newKey: string }) {
@@ -36,9 +41,11 @@ export class S3Controller {
     return fileUrl;
   }
 
-  // files
-  @Get('')
-  async list(): Promise<AWS.S3.ObjectList> {
-    return this.s3Service.listObjects();
+  // delete - Note: Access Denied Aluxion's IAM User don't have permissions to delete
+  @Delete(':objectKey')
+  async deleteObject(
+    @Param('objectKey') objectKey: string,
+  ): Promise<AWS.S3.DeleteObjectOutput> {
+    return await this.s3Service.deleteObject(objectKey);
   }
 }

@@ -34,16 +34,24 @@ export class S3Service {
       Key: newKey,
     };
     await this.s3.copyObject(copyParams).promise();
-    const deleteParams: AWS.S3.DeleteObjectRequest = {
-      Bucket: bucketName,
-      Key: oldKey,
-    };
-    await this.s3.deleteObject(deleteParams).promise();
+    await this.deleteObject(oldKey);
+
     const newObjectUrl = `https://${bucketName}.s3.amazonaws.com/${encodeURIComponent(
       newKey,
     )}`;
     return { url: newObjectUrl };
   }
+
+  // delete - Note: Access Denied Aluxion's IAM User don't have permissions to delete objects in the bucket.
+  async deleteObject(objectKey: string): Promise<AWS.S3.DeleteObjectOutput> {
+    // Set parameters for the delete operation
+    const params: AWS.S3.Types.DeleteObjectRequest = {
+      Bucket: bucketName,
+      Key: objectKey,
+    };
+    return await this.s3.deleteObject(params).promise();
+  }
+
   // check file
   async fileExists(bucketName: string, key: string): Promise<boolean> {
     try {
@@ -51,15 +59,13 @@ export class S3Service {
         Bucket: bucketName,
         Key: key,
       };
-
+      // file exists in s3
       await this.s3.headObject(headObjectParams).promise();
-      return true; // File exists
+      return true;
     } catch (error) {
       if (error.code === 'NotFound') {
-        return false; // File does not exist
+        return false;
       }
-
-      // Handle other errors if needed
       throw error;
     }
   }
@@ -84,6 +90,6 @@ export class S3Service {
       Body: buffer,
     };
 
-    return await this.s3.putObject(params).promise();
+    return await this.s3.upload(params).promise();
   }
 }

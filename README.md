@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="http://anthondev.com" target="blank"><img src="https://anthondev.s3.amazonaws.com/cover-api.jpg" width="400" alt="Nest Logo" /></a>
+  <a href="http://anthondev.com" target="blank"><img src="https://s3.eu-west-1.amazonaws.com/aluxion.bucket/logo-aluxion-large.jpg1574763484637" width="400" alt="Nest Logo" /></a>
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456

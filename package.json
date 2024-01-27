@@ -22,9 +22,6 @@
     "db:push": "npx prisma db push",
     "start:migrate:prod": "prisma migrate deploy && npm run start:prod"
   },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.10.3",
     "@nestjs/axios": "^3.0.1",
